@@ -7,7 +7,7 @@ This project presents my developer profile, selected work, technical stack and c
 ## Live Demo
 Add your deployed Vercel link here:
 
-[View Portfolio](#)
+[View Portfolio](https://kgega-portfolio.vercel.app/)
 
 ## Tech Stack
 - React
