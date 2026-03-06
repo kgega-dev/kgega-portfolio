@@ -20,7 +20,7 @@ export const projects = [
     desc:
       'Modern React SPA dashboard focused on modular structure, strict TypeScript usage, responsive UI and clean component architecture.',
     tech: ['REACT', 'TYPESCRIPT', 'TAILWIND', 'VITE'],
-    link: '#'
+    link: 'https://fate-detect.vercel.app/'
   },
   {
     id: '02',
