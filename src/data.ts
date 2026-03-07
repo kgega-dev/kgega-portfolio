@@ -33,12 +33,12 @@ export const projects = [
   },
   {
     id: '03',
-    title: 'PORTFOLIO WEBSITE',
-    type: 'PERSONAL BRANDING',
+    title: 'CHECKERTOOL',
+    type: 'OOP CONSOLE APPLICATION',
     desc:
-      'Personal developer portfolio built with React and TypeScript to showcase projects, skills and contact information in a modern format.',
-    tech: ['REACT', 'TYPESCRIPT', 'CSS'],
-    link: 'https://kgega-portfolio.vercel.app/'
+      'C++ console application for managing forensic and anti-cheat tools, built to demonstrate object-oriented design, inheritance, polymorphism and modular structure.',
+    tech: ['C++', 'OOP', 'WINDOWS API'],
+    link: 'https://github.com/kgega-dev/checker-tool'
   }
 ];
 
