@@ -42,6 +42,29 @@ export const projects = [
   }
 ];
 
+export const services = [
+  {
+    title: 'BUSINESS WEBSITES',
+    desc: 'Modern websites for small businesses and service-based brands with clear structure, strong presentation and contact-focused layout.'
+  },
+  {
+    title: 'LANDING PAGES',
+    desc: 'Clean, focused pages designed for a single service, offer or campaign with strong call-to-action flow.'
+  },
+  {
+    title: 'PORTFOLIO WEBSITES',
+    desc: 'Professional websites for freelancers, creatives and personal brands who want a stronger online presence.'
+  },
+  {
+    title: 'WEBSITE REDESIGNS',
+    desc: 'Refreshing outdated websites with a more modern look, improved layout and better responsiveness.'
+  },
+  {
+    title: 'FRONTEND UI IMPLEMENTATION',
+    desc: 'Responsive user interfaces built with modern frontend technologies and practical section-based structure.'
+  }
+];
+
 export const stack = [
   'REACT',
   'TYPESCRIPT',

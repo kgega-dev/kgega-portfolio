@@ -258,6 +258,75 @@ img {
   max-width: 720px;
 }
 
+/* Services */
+.services-section {
+  padding: 1rem 0 6rem;
+  border-top: 1px solid var(--line);
+}
+
+.services-intro {
+  max-width: 760px;
+  margin-bottom: 2rem;
+}
+
+.services-intro p {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+  .services-section {
+    padding: 1rem 0 4rem;
+  }
+
+  .services-intro {
+    margin-bottom: 1.4rem;
+  }
+
+  .services-intro p,
+  .service-card p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  .service-card h3 {
+    font-size: 0.92rem;
+  }
+
+.service-card {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 1.25rem;
+  transition: border-color 0.2s ease, transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.service-card:hover {
+  border-color: rgba(215, 255, 63, 0.2);
+  background: var(--surface-2);
+  transform: translateY(-2px);
+}
+
+.service-card h3 {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.8rem;
+}
+
+.service-card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
 /* Work */
 .work-section {
   padding: 1rem 0 6rem;
@@ -473,7 +542,8 @@ img {
 /* Responsive */
 @media (max-width: 1024px) {
   .about-grid,
-  .contact-grid {
+  .contact-grid,
+  .services-grid {
     grid-template-columns: 1fr;
   }
 

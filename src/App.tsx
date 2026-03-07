@@ -1,4 +1,4 @@
-import { personalInfo, projects, stack } from './data';
+import { personalInfo, projects, services, stack } from './data'; 
 import './styles.css';
 
 function App() {
@@ -13,6 +13,7 @@ function App() {
 
         <nav className="nav">
           <a href="#about">About</a>
+          <a href="#services">Services</a>
           <a href="#projects">Projects</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -78,6 +79,27 @@ function App() {
             developer opportunities.
           </p>
         </div>
+      </section>
+
+      <section className="services-section" id="services">
+  <div className="section-label">SERVICES</div>
+
+  <div className="services-intro">
+    <p>
+      I help small businesses, service-based brands and personal projects
+      present themselves professionally online through clean, responsive and
+      modern websites.
+    </p>
+  </div>
+
+  <div className="services-grid">
+    {services.map((service) => (
+      <article key={service.title} className="service-card">
+        <h3>{service.title}</h3>
+        <p>{service.desc}</p>
+      </article>
+    ))}
+  </div>
       </section>
 
       <section className="work-section" id="projects">
