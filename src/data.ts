@@ -6,7 +6,7 @@ export const personalInfo = {
   email: 'kgega.dev@gmail.com',
   location: 'Zagreb, Croatia',
   github: 'https://github.com/kgega-dev',
-  linkedin: 'https://www.linkedin.com/in/kristijan-gega-93b8753b5/',
+  linkedin: 'https://www.linkedin.com/in/kristijan-gega/',
   image: profileImage,
   statement:
     'Building modern, responsive and practical web solutions with React, TypeScript and modern frontend tooling.'
@@ -24,12 +24,12 @@ export const projects = [
   },
   {
     id: '02',
-    title: 'BUSINESS WEBSITE',
-    type: 'FRONTEND WEBSITE',
+    title: 'OBSIDIAN DETAILING',
+    type: 'BUSINESS LANDING PAGE',
     desc:
-      'Responsive business-focused website project with a clean landing page structure, strong visual hierarchy and practical contact sections.',
-    tech: ['HTML', 'CSS', 'JAVASCRIPT'],
-    link: '#'
+      'Premium business landing page for a luxury auto detailing studio, focused on responsive layout, polished UI, service presentation and strong visual branding.',
+    tech: ['REACT', 'TYPESCRIPT', 'CSS', 'VITE'],
+    link: 'https://obsidian-detailing.vercel.app/'
   },
   {
     id: '03',
@@ -38,7 +38,7 @@ export const projects = [
     desc:
       'Personal developer portfolio built with React and TypeScript to showcase projects, skills and contact information in a modern format.',
     tech: ['REACT', 'TYPESCRIPT', 'CSS'],
-    link: '#'
+    link: 'https://kgega-portfolio.vercel.app/'
   }
 ];
 
