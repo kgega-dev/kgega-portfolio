@@ -5,7 +5,6 @@ Personal developer portfolio built with React, TypeScript and Vite.
 This project presents my developer profile, selected work, technical stack and contact information in a modern, responsive and minimal format.
 
 ## Live Demo
-Add your deployed Vercel link here:
 
 [View Portfolio](https://kgega-portfolio.vercel.app/)
 
