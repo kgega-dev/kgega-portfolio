@@ -6,14 +6,23 @@ function App() {
 
   return (
     <div className="portfolio">
-      <nav className="header">
-        <div className="logo">KG©</div>
-        <div className="contact-link">
-          <a href={`mailto:${personalInfo.email}`}>GET IN TOUCH —</a>
-        </div>
-      </nav>
+      <header className="header">
+        <a href="#home" className="logo">
+          KG©
+        </a>
 
-      <main className="hero">
+        <nav className="nav">
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div className="contact-link">
+          <a href="#contact">GET IN TOUCH —</a>
+        </div>
+      </header>
+
+      <main className="hero" id="home">
         <div className="hero-top">
           <span className="availability">● AVAILABLE FOR WORK</span>
           <span className="location">{personalInfo.location}</span>
@@ -31,14 +40,13 @@ function App() {
             <p className="statement">{personalInfo.statement}</p>
           </div>
 
-          <div className="socials">
-            <a href={personalInfo.github} target="_blank" rel="noreferrer">
-              GH
+          <div className="hero-actions">
+            <a href="#projects" className="primary-btn">
+              View Projects
             </a>
-            <a href={personalInfo.linkedin} target="_blank" rel="noreferrer">
-              LI
+            <a href="#contact" className="secondary-btn">
+              Contact
             </a>
-            <a href={`mailto:${personalInfo.email}`}>MAIL</a>
           </div>
         </div>
       </main>
@@ -50,13 +58,10 @@ function App() {
             alt="Kristijan Gega"
             className="main-img"
           />
-          <div className="image-badge">
-            <span>WEB DEVELOPER</span>
-          </div>
         </div>
       </section>
 
-      <section className="about-section">
+      <section className="about-section" id="about">
         <div className="section-label">ABOUT</div>
 
         <div className="about-grid">
@@ -78,40 +83,45 @@ function App() {
       <section className="work-section" id="projects">
         <div className="section-label">SELECTED WORK</div>
 
-        {projects.map((project) => (
-          <article key={project.id} className="work-item">
-            <div className="work-head">
-              <div className="work-num">{project.id}</div>
+        <div className="work-list">
+          {projects.map((project) => (
+            <a
+              key={project.id}
+              href={project.link}
+              target="_blank"
+              rel="noreferrer"
+              className="work-item"
+              aria-label={`Open ${project.title}`}
+            >
+              <div className="work-head">
+                <div className="work-num">{project.id}</div>
 
-              <div className="work-title-wrap">
-                <h2>{project.title}</h2>
-                <p className="work-type">{project.type}</p>
+                <div className="work-title-wrap">
+                  <h2>{project.title}</h2>
+                  <p className="work-type">{project.type}</p>
+                </div>
+
+                <div className="work-arrow">↗</div>
               </div>
 
-              <a
-                href={project.link}
-                className="work-arrow"
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Open ${project.title}`}
-              >
-                ↗
-              </a>
-            </div>
+              <div className="work-body">
+                <p className="work-desc">{project.desc}</p>
 
-            <div className="work-body">
-              <p className="work-desc">{project.desc}</p>
+                <div className="work-tech">
+                  {project.tech.map((item) => (
+                    <span key={item} className="tech-pill">
+                      {item}
+                    </span>
+                  ))}
+                </div>
 
-              <div className="work-tech">
-                {project.tech.map((item) => (
-                  <span key={item} className="tech-pill">
-                    {item}
-                  </span>
-                ))}
+                <div className="work-links">
+                  <span className="project-link">View Project</span>
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
+            </a>
+          ))}
+        </div>
       </section>
 
       <section className="stack-section">
