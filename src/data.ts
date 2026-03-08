@@ -12,6 +12,10 @@ export const personalInfo = {
     'Building modern, responsive and practical web solutions with React, TypeScript and modern frontend tooling.'
 };
 
+import fatedetectImg from './assets/fatedetect.png';
+import obsidianImg from './assets/obsidian.png';
+import checkertoolImg from './assets/checkertool.png';
+
 export const projects = [
   {
     id: '01',
@@ -20,7 +24,8 @@ export const projects = [
     desc:
       'Modern React SPA dashboard focused on modular structure, strict TypeScript usage, responsive UI and clean component architecture.',
     tech: ['REACT', 'TYPESCRIPT', 'TAILWIND', 'VITE'],
-    link: 'https://fate-detect.vercel.app/'
+    link: 'https://fate-detect.vercel.app/',
+    image: fatedetectImg
   },
   {
     id: '02',
@@ -29,7 +34,8 @@ export const projects = [
     desc:
       'Premium business landing page for a luxury auto detailing studio, focused on responsive layout, polished UI, service presentation and strong visual branding.',
     tech: ['REACT', 'TYPESCRIPT', 'CSS', 'VITE'],
-    link: 'https://obsidian-detailing.vercel.app/'
+    link: 'https://obsidian-detailing.vercel.app/',
+    image: obsidianImg
   },
   {
     id: '03',
@@ -38,7 +44,8 @@ export const projects = [
     desc:
       'C++ console application for managing forensic and anti-cheat tools, built to demonstrate object-oriented design, inheritance, polymorphism and modular structure.',
     tech: ['C++', 'OOP', 'WINDOWS API'],
-    link: 'https://github.com/kgega-dev/checker-tool'
+    link: 'https://github.com/kgega-dev/checker-tool',
+    image: checkertoolImg
   }
 ];
 
@@ -73,8 +80,8 @@ export const stack = [
   'CSS',
   'SQL',
   'MYSQL',
-  'ORACLE',
-  'C#',
+  'DOCKER',
+  'C# .NET',
   'GIT',
   'GITHUB'
 ];

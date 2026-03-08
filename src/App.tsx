@@ -4,22 +4,59 @@ import { personalInfo, projects, services } from './data';
 import { TypewriterEffect } from './components/ui/typewriter-effect';
 import { GlowingEffect } from './components/ui/glowing-effect';
 import { CtaCard } from './components/cta-card';
+import { ChevronRight } from 'lucide-react';
 import './styles.css';
+
+function FadeIn({ children, delay = 0, className = "", id, style }: { children: React.ReactNode, delay?: number, className?: string, id?: string, style?: React.CSSProperties }) {
+  return (
+    <motion.section
+      id={id}
+      style={style}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay }}
+      className={className}
+    >
+      {children}
+    </motion.section>
+  );
+}
+
+const Background = () => {
+  return (
+    <div className="fixed inset-0 z-[-1] flex items-center justify-center overflow-hidden pointer-events-none" style={{ backgroundColor: 'var(--bg)' }}>
+      <div className="absolute inset-0 opacity-[0.3]" style={{ backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2.5 }}
+        className="absolute w-[800px] h-[800px] rounded-full"
+        style={{
+          background: 'radial-gradient(circle, rgba(215,255,63,0.05) 0%, rgba(0,0,0,0) 70%)',
+          top: '-20%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
+      />
+    </div>
+  );
+};
 
 // ─── Stack icon definitions ────────────────────────────────────────────────
 const STACK_ICONS = [
-  { key: 'react',      slug: 'react',       label: 'React' },
-  { key: 'ts',         slug: 'typescript',  label: 'TypeScript' },
-  { key: 'js',         slug: 'javascript',  label: 'JavaScript' },
-  { key: 'html',       slug: 'html5',       label: 'HTML5' },
-  { key: 'css',        slug: 'css3',        label: 'CSS3' },
-  { key: 'mysql',      slug: 'mysql',       label: 'MySQL' },
-  { key: 'oracle',     slug: 'oracle',      label: 'Oracle' },
-  { key: 'csharp',     slug: 'csharp',      label: 'C#' },
-  { key: 'git',        slug: 'git',         label: 'Git' },
-  { key: 'github',     slug: 'github',      label: 'GitHub' },
-  { key: 'vite',       slug: 'vite',        label: 'Vite' },
-  { key: 'tailwind',   slug: 'tailwindcss', label: 'Tailwind' },
+  { key: 'react', slug: 'react', label: 'React' },
+  { key: 'ts', slug: 'typescript', label: 'TypeScript' },
+  { key: 'js', slug: 'javascript', label: 'JavaScript' },
+  { key: 'html', slug: 'html5', label: 'HTML5' },
+  { key: 'css', slug: 'css', label: 'CSS3' },
+  { key: 'mysql', slug: 'mysql', label: 'MySQL' },
+  { key: 'docker', slug: 'docker', label: 'Docker' },
+  { key: 'csharp', slug: 'dotnet', label: 'C#' },
+  { key: 'git', slug: 'git', label: 'Git' },
+  { key: 'github', slug: 'github', label: 'GitHub' },
+  { key: 'vite', slug: 'vite', label: 'Vite' },
+  { key: 'tailwind', slug: 'tailwindcss', label: 'Tailwind' },
 ];
 
 // Two full copies
@@ -73,8 +110,8 @@ function IconTile({ slug, label, uid, hoveredUid, onEnter, onLeave }: IconTilePr
           <motion.span
             key="lbl"
             initial={{ opacity: 0, y: -5, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0,  scale: 1 }}
-            exit={{   opacity: 0, y: -4,  scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -4, scale: 0.9 }}
             transition={{ duration: 0.16, ease: [0.25, 0.46, 0.45, 0.94] }}
             style={{
               position: 'absolute',
@@ -103,18 +140,16 @@ function IconTile({ slug, label, uid, hoveredUid, onEnter, onLeave }: IconTilePr
 }
 
 // ─── Marquee ───────────────────────────────────────────────────────────────
-// Pure RAF scroll. Two identical sets side-by-side.
-// Once offset reaches -SET_WIDTH we snap back by SET_WIDTH — completely invisible seam.
-const ITEM_W   = 64 + 40;              // icon width + total horizontal margin
-const SET_W    = STACK_ICONS.length * ITEM_W;
-const SPEED    = 0.038;                // px per ms
+const ITEM_W = 64 + 40;
+const SET_W = STACK_ICONS.length * ITEM_W;
+const SPEED = 0.038;
 
 function StackMarquee() {
   const [hoveredUid, setHoveredUid] = useState<string | null>(null);
-  const trackRef  = useRef<HTMLDivElement>(null);
-  const xRef      = useRef(0);
-  const lastRef   = useRef<number | null>(null);
-  const rafRef    = useRef<number | null>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const xRef = useRef(0);
+  const lastRef = useRef<number | null>(null);
+  const rafRef = useRef<number | null>(null);
   const pausedRef = useRef(false);
 
   useEffect(() => { pausedRef.current = hoveredUid !== null; }, [hoveredUid]);
@@ -173,8 +208,8 @@ function MailIcon() {
   return (
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="4" width="20" height="16" rx="2.4"/>
-      <polyline points="2,7 12,14 22,7"/>
+      <rect x="2" y="4" width="20" height="16" rx="2.4" />
+      <polyline points="2,7 12,14 22,7" />
     </svg>
   );
 }
@@ -207,9 +242,9 @@ function LinkedinIcon() {
 }
 
 const CONTACT_LINKS = [
-  { key: 'email',    href: `mailto:${personalInfo.email}`, icon: <MailIcon />,     label: personalInfo.email, display: 'Email',    external: false },
-  { key: 'github',   href: personalInfo.github,            icon: <GithubIcon />,   label: 'GitHub',           display: 'GitHub',   external: true  },
-  { key: 'linkedin', href: personalInfo.linkedin,          icon: <LinkedinIcon />, label: 'LinkedIn',         display: 'LinkedIn', external: true  },
+  { key: 'email', href: `mailto:${personalInfo.email}`, icon: <MailIcon />, label: personalInfo.email, display: personalInfo.email, external: false },
+  { key: 'github', href: personalInfo.github, icon: <GithubIcon />, label: 'GitHub', display: 'GitHub', external: true },
+  { key: 'linkedin', href: personalInfo.linkedin, icon: <LinkedinIcon />, label: 'LinkedIn', display: 'LinkedIn', external: true },
 ];
 
 // ─── Project card ─────────────────────────────────────────────────────────
@@ -220,6 +255,7 @@ interface Project {
   desc: string;
   tech: string[];
   link: string;
+  image?: string;
 }
 
 function ProjectCard({ project }: { project: Project }) {
@@ -233,31 +269,56 @@ function ProjectCard({ project }: { project: Project }) {
       aria-label={`Open ${project.title}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="group block border-t border-line py-[1.2rem] md:py-8 md:pb-[2.4rem] last:border-b transition-all duration-[250ms] md:hover:bg-surface md:hover:pl-4"
+      className="group block border-t border-line py-[1.5rem] md:py-[2.5rem] last:border-b transition-all duration-[400ms] hover:bg-surface-2/20 md:hover:px-0 relative"
     >
-      <div className="grid grid-cols-1 md:grid-cols-[64px_minmax(0,1fr)_56px] gap-[0.6rem] md:gap-4 items-start">
-        <div className="text-accent text-[0.72rem] md:text-[0.82rem] font-extrabold tracking-[0.14em] md:pt-[0.7rem]">
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-[64px_minmax(0,1fr)_56px] gap-[0.8rem] md:gap-4 items-start">
+        <div className="text-accent text-[0.72rem] md:text-[0.82rem] font-extrabold tracking-[0.14em] md:pt-[0.9rem]">
           {project.id}
         </div>
 
-        <div>
-          <h2 className="text-[1.28rem] sm:text-[1.45rem] md:text-[clamp(1.8rem,4vw,3.4rem)] leading-[1] md:leading-[0.95] tracking-[-0.05em] font-black">
-            {project.title}
-          </h2>
-          <p className="mt-[0.45rem] md:mt-[0.65rem] text-muted text-[0.72rem] md:text-[0.82rem] tracking-[0.16em] uppercase">
-            {project.type}
-          </p>
+        <div className="flex flex-col xl:flex-row xl:justify-between xl:items-start xl:gap-[3rem]">
+          <div className="flex-1">
+            <h2 className="text-[1.4rem] sm:text-[1.8rem] md:text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.05] md:leading-[1] tracking-[-0.03em] font-black group-hover:text-amber-50 group-hover:drop-shadow-sm transition-all duration-300">
+              {project.title}
+            </h2>
+            <p className="mt-[0.45rem] md:mt-[0.65rem] text-muted text-[0.72rem] md:text-[0.82rem] tracking-[0.16em] uppercase">
+              {project.type}
+            </p>
+            <div className="mt-[1.4rem] md:mt-[2rem] xl:max-w-[90%]">
+              <p className="text-muted text-[0.92rem] md:text-[0.98rem] leading-[1.7] md:leading-[1.8]">
+                {project.desc}
+              </p>
+              <div className="flex flex-wrap gap-[0.45rem] md:gap-[0.7rem] mt-[1.2rem] md:mt-[1.5rem]">
+                {project.tech.map((item) => (
+                  <span
+                    key={item}
+                    className="border border-line bg-surface-2 py-[0.5rem] md:py-[0.62rem] px-[0.75rem] md:px-[1rem] rounded-full text-[0.64rem] md:text-[0.74rem] font-bold tracking-[0.08em] md:tracking-[0.12em] text-fg"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {project.image && (
+            <div className="mt-8 xl:mt-0 w-[100%] xl:w-[400px] aspect-[16/9] flex-shrink-0 rounded-[14px] overflow-hidden border border-line/40 shadow-xl transition-all duration-500 transform group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_rgba(215,255,63,0.08)] relative xl:-mt-[1rem]">
+              <div className="absolute inset-0 bg-accent/20 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none"></div>
+              <img src={project.image} alt={project.title} className="w-full h-full object-cover grayscale-[0.8] opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-[1.03]" />
+            </div>
+          )}
         </div>
 
-        {/* Arrow circle — rotates 45° and lifts on hover */}
+        {/* Arrow circle */}
         <motion.div
           animate={{
-            y: hovered ? -4 : 0,
+            y: hovered ? -6 : 0,
+            x: hovered ? 6 : 0,
             backgroundColor: hovered ? 'rgba(215,255,63,0.08)' : 'transparent',
             borderColor: hovered ? 'rgba(215,255,63,0.22)' : 'rgba(255,255,255,0.1)',
           }}
           transition={{ type: 'spring', stiffness: 280, damping: 20 }}
-          className="w-[42px] h-[42px] md:w-[52px] md:h-[52px] border rounded-full grid place-items-center text-[1.1rem] md:text-[1.45rem] mt-[0.2rem] md:mt-0 overflow-hidden"
+          className="w-[42px] h-[42px] md:w-[52px] md:h-[52px] border rounded-full hidden md:grid place-items-center text-[1.1rem] md:text-[1.45rem] shadow-sm"
           style={{ borderColor: 'rgba(255,255,255,0.1)' }}
         >
           <motion.span
@@ -270,26 +331,6 @@ function ProjectCard({ project }: { project: Project }) {
         </motion.div>
       </div>
 
-      <div className="md:ml-[80px] mt-[0.8rem] md:mt-[1.4rem] md:max-w-[860px]">
-        <p className="text-muted text-[0.92rem] md:text-base leading-[1.65] md:leading-[1.8]">
-          {project.desc}
-        </p>
-        <div className="flex flex-wrap gap-[0.45rem] md:gap-[0.7rem] mt-[0.9rem] md:mt-[1.2rem]">
-          {project.tech.map((item) => (
-            <span
-              key={item}
-              className="border border-line bg-surface-2 py-[0.5rem] md:py-[0.62rem] px-[0.65rem] md:px-[0.9rem] rounded-full text-[0.64rem] md:text-[0.74rem] font-bold tracking-[0.08em] md:tracking-[0.12em] text-fg"
-            >
-              {item}
-            </span>
-          ))}
-        </div>
-        <div className="mt-[0.9rem] md:mt-[1.2rem]">
-          <span className="text-[0.74rem] md:text-[0.86rem] font-bold tracking-[0.08em] uppercase text-accent border-b border-transparent transition-all duration-200 group-hover:border-accent group-hover:opacity-85">
-            View Project
-          </span>
-        </div>
-      </div>
     </a>
   );
 }
@@ -305,173 +346,208 @@ function App() {
   });
 
   return (
-    <div className="px-[4vw] md:px-[4vw] max-w-[1280px] mx-auto">
+    <>
+      <Background />
+      <div className="px-[4vw] md:px-[4vw] max-w-[1280px] mx-auto relative z-10">
 
-      {/* Header */}
-      <header className="sticky top-0 z-20 h-[72px] md:h-[88px] flex justify-between items-center gap-2 md:gap-4 bg-[rgba(10,10,10,0.86)] backdrop-blur-[12px]">
-        <a href="#home" className="text-[0.76rem] md:text-[0.9rem] font-black tracking-[0.14em] md:tracking-[0.18em]">
-          KG©
-        </a>
-        <nav className="hidden md:flex gap-[1.2rem] items-center">
-          {['about', 'services', 'projects', 'contact'].map((s) => (
-            <a key={s} href={`#${s}`}
-              className="text-[0.76rem] font-bold tracking-[0.12em] uppercase text-muted transition-colors duration-200 hover:text-fg">
-              {s.charAt(0).toUpperCase() + s.slice(1)}
-            </a>
-          ))}
-        </nav>
-        <div>
-          <a href="#contact" className="text-[0.66rem] md:text-[0.76rem] font-extrabold tracking-[0.1em] md:tracking-[0.16em] transition-opacity duration-200 hover:opacity-70">
-            GET IN TOUCH —
+        {/* Header */}
+        <header className="sticky top-0 z-50 h-[72px] md:h-[88px] flex justify-between items-center gap-2 md:gap-4 bg-[rgba(10,10,10,0.85)] backdrop-blur-[16px] border-b border-transparent transition-colors duration-300" style={{ borderBottomColor: hasScrolled ? 'rgba(255,255,255,0.05)' : 'transparent' }}>
+          <a href="#home" className="text-[0.76rem] md:text-[0.9rem] font-black tracking-[0.14em] md:tracking-[0.18em]">
+            KG©
           </a>
-        </div>
-      </header>
-
-      {/* Hero */}
-      <motion.main
-        layout
-        transition={{ type: 'spring', bounce: 0.1, duration: 0.8 }}
-        className={`flex flex-col justify-center py-2 pb-[2.2rem] md:py-8 md:pb-16 ${
-          hasScrolled ? 'min-h-[72vh] md:min-h-[72vh]' : 'min-h-[100svh]'
-        }`}
-        id="home"
-      >
-        <motion.div layout className="flex flex-col md:flex-row md:justify-between gap-[0.35rem] md:gap-4 mb-4 md:mb-8 text-[0.62rem] md:text-[0.74rem] tracking-[0.12em] md:tracking-[0.18em] text-muted uppercase">
-          <span className="text-accent">● AVAILABLE FOR WORK</span>
-          <span>{personalInfo.location}</span>
-        </motion.div>
-
-        <motion.h1 layout className="text-[3.7rem] sm:text-[4.4rem] md:text-[clamp(4.6rem,14vw,11rem)] leading-[0.88] md:leading-[0.82] tracking-[-0.07em] md:tracking-[-0.06em] font-black">
-          <TypewriterEffect
-            cursorClassName="bg-accent"
-            words={[
-              { text: firstName },
-              { text: '\n' },
-              { text: lastName, className: 'md:ml-[10vw]' },
-            ]}
-          />
-        </motion.h1>
-
-        <motion.div layout className="flex flex-col md:flex-row md:justify-between md:items-end gap-4 md:gap-8 mt-4 md:mt-8">
-          <div className="md:max-w-[640px]">
-            <p className="text-accent text-[0.68rem] md:text-[0.78rem] font-extrabold tracking-[0.12em] md:tracking-[0.18em] mb-[0.7rem] md:mb-4 uppercase">
-              {personalInfo.role}
-            </p>
-            <p className="text-[0.92rem] md:text-base leading-[1.55] md:leading-[1.7] text-muted md:max-w-[520px]">
-              {personalInfo.statement}
-            </p>
-          </div>
-        </motion.div>
-      </motion.main>
-
-      {/* About */}
-      <section className="py-[0.8rem] md:py-16 pb-12 md:pb-24 border-t border-line" id="about">
-        <div className="text-[0.68rem] md:text-[0.76rem] font-extrabold tracking-[0.14em] md:tracking-[0.18em] text-accent mb-4 md:mb-6">ABOUT</div>
-        <CtaCard
-          imageSrc={personalInfo.image}
-          imageAlt="Kristijan Gega"
-          title={personalInfo.role}
-          subtitle={
-            <>
-              I am a Computer Science student at VUB focused on building{' '}
-              <span className="text-accent">modern, responsive</span> and practical web solutions.
-            </>
-          }
-          description="Specialised in frontend development with React/TypeScript. Strong foundation in backend systems (SQL, C#). Building real-world projects and growing toward freelance opportunities."
-          buttonText="View Projects"
-          onButtonClick={() => { window.location.href = '#projects'; }}
-          secondaryButtonText="Contact"
-          onSecondaryButtonClick={() => { window.location.href = '#contact'; }}
-          className="border-line bg-surface text-fg [&_img]:grayscale [&_img]:hover:grayscale-0 [&_img]:transition-all [&_img]:duration-700 [&_p.text-sm]:text-accent [&_p.text-sm]:tracking-[0.12em] [&_p.text-sm]:uppercase [&_p.text-sm]:text-[0.7rem] [&_p.text-sm]:font-bold [&_.text-muted-foreground]:text-muted [&_button]:bg-accent [&_button]:text-[#0a0a0a] [&_button]:font-bold [&_button]:tracking-[0.1em] [&_button]:uppercase [&_button]:hover:opacity-90 [&_button]:hover:-translate-y-0.5 [&_button]:transition-all [&_button]:rounded-full [&_.cta-secondary-btn]:!bg-black [&_.cta-secondary-btn]:!text-white [&_.cta-secondary-btn]:!border-white [&_.cta-secondary-btn]:border"
-        />
-      </section>
-
-      {/* Services */}
-      <section className="py-4 pb-16 border-t border-line" id="services">
-        <div className="text-[0.68rem] md:text-[0.76rem] font-extrabold tracking-[0.14em] md:tracking-[0.18em] text-accent mb-4 md:mb-6">SERVICES</div>
-        <div className="max-w-[760px] mb-[1.4rem]">
-          <p className="text-[0.92rem] md:text-base leading-[1.65] md:leading-[1.8] text-muted">
-            I help small businesses, service-based brands and personal projects present themselves
-            professionally online through clean, responsive and modern websites.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {services.map((service) => (
-            <article key={service.title} className="group relative border border-line bg-surface rounded-[18px] p-5 transition-colors duration-200 hover:bg-surface-2">
-              <GlowingEffect disabled={false} spread={30} glow={true} proximity={80} inactiveZone={0.05} borderWidth={2} />
-              <div className="relative z-10 transition-transform duration-300">
-                <h3 className="text-[0.92rem] md:text-base font-extrabold tracking-[0.08em] mb-[0.8rem]">{service.title}</h3>
-                <p className="text-[0.92rem] md:text-[0.95rem] leading-[1.65] md:leading-[1.7] text-muted">{service.desc}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* Selected Work */}
-      <section className="py-[0.8rem] md:py-4 pb-12 md:pb-24 border-t border-line" id="projects">
-        <div className="text-[0.68rem] md:text-[0.76rem] font-extrabold tracking-[0.14em] md:tracking-[0.18em] text-accent mb-4 md:mb-6">SELECTED WORK</div>
-        <div className="flex flex-col">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
-      </section>
-
-      {/* Stack */}
-      <section
-        className="py-[0.8rem] md:py-4 pb-12 md:pb-24 border-t border-line"
-        style={{ overflow: 'hidden' }}
-      >
-        <div className="text-[0.68rem] md:text-[0.76rem] font-extrabold tracking-[0.14em] md:tracking-[0.18em] text-accent mb-4 md:mb-8">
-          STACK
-        </div>
-        <StackMarquee />
-      </section>
-
-      {/* Contact */}
-      <section className="py-[0.8rem] md:py-4 pb-12 md:pb-24 border-t border-line" id="contact">
-        <div className="text-[0.68rem] md:text-[0.76rem] font-extrabold tracking-[0.14em] md:tracking-[0.18em] text-accent mb-4 md:mb-6">CONTACT</div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6 lg:gap-10 items-start">
-          {/* Left — heading */}
+          <nav className="hidden md:flex gap-[1.2rem] items-center">
+            {['about', 'services', 'projects', 'contact'].map((s) => (
+              <a key={s} href={`#${s}`}
+                className="text-[0.76rem] font-bold tracking-[0.12em] uppercase text-muted transition-colors duration-200 hover:text-fg">
+                {s.charAt(0).toUpperCase() + s.slice(1)}
+              </a>
+            ))}
+          </nav>
           <div>
-            <h3 className="text-[1.4rem] md:text-[clamp(1.6rem,3vw,2.5rem)] leading-[1.15] tracking-[-0.04em] mb-[0.7rem] md:mb-[0.9rem]">
-              Let&apos;s build something useful.
-            </h3>
-            <p className="text-[0.92rem] md:text-base text-muted leading-[1.65] md:leading-[1.8] max-w-[480px]">
-              Open to collaborations and junior opportunities.
+            <a href="#contact" className="text-[0.66rem] md:text-[0.76rem] font-extrabold tracking-[0.1em] md:tracking-[0.16em] transition-opacity duration-200 hover:opacity-70 border border-line px-4 py-2 rounded-full hover:bg-surface">
+              GET IN TOUCH
+            </a>
+          </div>
+        </header>
+
+        {/* Hero */}
+        <motion.main
+          layout
+          transition={{ type: 'spring', bounce: 0.1, duration: 0.8 }}
+          className={`flex flex-col justify-center py-2 pb-[2.2rem] md:py-8 md:pb-16 ${hasScrolled ? 'min-h-[72vh] md:min-h-[72vh]' : 'min-h-[100svh]'
+            }`}
+          id="home"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.5 }}
+            layout
+            className="flex flex-col md:flex-row md:justify-between gap-[0.35rem] md:gap-4 mb-4 md:mb-8 text-[0.62rem] md:text-[0.74rem] tracking-[0.12em] md:tracking-[0.18em] text-muted uppercase"
+          >
+            <span className="text-accent flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+              </span>
+              AVAILABLE FOR WORK
+            </span>
+            <span>{personalInfo.location}</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            layout
+            className="text-[3.7rem] sm:text-[4.4rem] md:text-[clamp(4.6rem,14vw,11rem)] leading-[0.88] md:leading-[0.82] tracking-[-0.07em] md:tracking-[-0.06em] font-black drop-shadow-sm"
+          >
+            <TypewriterEffect
+              cursorClassName="bg-accent"
+              words={[
+                { text: firstName },
+                { text: '\n' },
+                { text: lastName, className: 'md:ml-[10vw]' },
+              ]}
+            />
+          </motion.h1>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            layout
+            className="flex flex-col md:flex-row md:justify-between md:items-end gap-4 md:gap-8 mt-4 md:mt-8"
+          >
+            <div className="md:max-w-[640px]">
+              <p className="text-accent text-[0.68rem] md:text-[0.78rem] font-extrabold tracking-[0.12em] md:tracking-[0.18em] mb-[0.7rem] md:mb-4 uppercase">
+                {personalInfo.role}
+              </p>
+              <p className="text-[0.92rem] md:text-base leading-[1.65] md:leading-[1.7] text-muted md:max-w-[520px]">
+                {personalInfo.statement}
+              </p>
+            </div>
+
+            <motion.a
+              href="#projects"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="hidden md:flex items-center gap-2 text-sm font-bold tracking-widest uppercase border border-line rounded-full px-6 py-4 hover:bg-surface transition-colors duration-300"
+            >
+              See Work <ChevronRight size={16} className="text-accent" />
+            </motion.a>
+          </motion.div>
+        </motion.main>
+
+        {/* About */}
+        <FadeIn id="about" className="py-[1.5rem] md:py-[4rem] pb-12 md:pb-[5rem] border-t border-line">
+          <div className="text-[0.68rem] md:text-[0.76rem] font-extrabold tracking-[0.14em] md:tracking-[0.18em] text-accent mb-6 md:mb-10">ABOUT</div>
+          <CtaCard
+            imageSrc={personalInfo.image}
+            imageAlt="Kristijan Gega"
+            title={personalInfo.role}
+            subtitle={
+              <>
+                I am a Computer Science student at VUB focused on building{' '}
+                <span className="text-accent">modern, responsive</span> and practical web solutions.
+              </>
+            }
+            description="Specialised in frontend development with React/TypeScript. Strong foundation in backend systems (SQL, C#). Building real-world projects and growing toward freelance opportunities."
+            buttonText="View Projects"
+            onButtonClick={() => { document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' }) }}
+            secondaryButtonText="Contact"
+            onSecondaryButtonClick={() => { document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }) }}
+            className="border-line bg-surface backdrop-blur-sm text-fg [&_img]:grayscale [&_img]:opacity-90 [&_img]:hover:grayscale-0 [&_img]:hover:opacity-100 [&_img]:transition-all [&_img]:duration-700 [&_p.text-sm]:text-accent [&_p.text-sm]:tracking-[0.12em] [&_p.text-sm]:uppercase [&_p.text-sm]:text-[0.7rem] [&_p.text-sm]:font-bold [&_.text-muted-foreground]:text-muted [&_button]:bg-accent [&_button]:text-[#0a0a0a] [&_button]:font-bold [&_button]:tracking-[0.1em] [&_button]:uppercase [&_button]:hover:opacity-90 [&_button]:hover:-translate-y-0.5 [&_button]:transition-all [&_button]:rounded-full [&_.cta-secondary-btn]:!bg-transparent [&_.cta-secondary-btn]:!text-fg [&_.cta-secondary-btn]:!border-line [&_.cta-secondary-btn]:border [&_.cta-secondary-btn]:hover:!bg-surface-2"
+          />
+        </FadeIn>
+
+        {/* Services */}
+        <FadeIn id="services" className="py-[1.5rem] md:py-[4rem] pb-12 md:pb-[5rem] border-t border-line">
+          <div className="text-[0.68rem] md:text-[0.76rem] font-extrabold tracking-[0.14em] md:tracking-[0.18em] text-accent mb-4 md:mb-6">SERVICES</div>
+          <div className="max-w-[760px] mb-[3rem]">
+            <p className="text-[1.1rem] md:text-[1.4rem] leading-[1.5] text-fg font-medium">
+              I help small businesses, service-based brands and personal projects present themselves
+              professionally online through clean, responsive and modern websites.
             </p>
           </div>
-
-          {/* Right — pill buttons in a row */}
-          <div className="flex flex-row flex-wrap items-center gap-3">
-            {CONTACT_LINKS.map(({ key, href, icon, label, display, external }) => (
-              <motion.a
-                key={key}
-                href={href}
-                {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}
-                aria-label={label}
-                title={label}
-                whileHover={{ scale: 1.06, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: 'spring', stiffness: 340, damping: 20 }}
-                className="inline-flex items-center gap-[0.45rem] border border-line bg-surface hover:bg-surface-2 hover:border-fg/40 text-fg rounded-full pl-[0.75rem] pr-[1rem] py-[0.55rem] text-[0.75rem] md:text-[0.8rem] font-semibold tracking-[0.04em] transition-colors duration-200 select-none"
-              >
-                <span style={{ opacity: 0.8, display: 'flex', alignItems: 'center' }}>{icon}</span>
-                <span>{display}</span>
-              </motion.a>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+            {services.map((service) => (
+              <article key={service.title} className="group relative border border-line bg-surface rounded-[18px] p-6 lg:p-8 transition-colors duration-200 hover:bg-surface-2">
+                <GlowingEffect disabled={false} spread={30} glow={true} proximity={80} inactiveZone={0.05} borderWidth={2} />
+                <div className="relative z-10 transition-transform duration-300">
+                  <h3 className="text-[0.98rem] md:text-[1.1rem] font-extrabold tracking-[0.05em] mb-[1rem] leading-tight text-fg">{service.title}</h3>
+                  <p className="text-[0.92rem] md:text-[0.95rem] leading-[1.7] text-muted">{service.desc}</p>
+                </div>
+              </article>
             ))}
           </div>
-        </div>
-      </section>
+        </FadeIn>
 
-      {/* Footer */}
-      <footer className="py-[1.3rem] md:py-8 pb-[2.3rem] md:pb-16 text-[0.62rem] md:text-[0.7rem] text-[#5f5f5f] text-center tracking-[0.18em] leading-[1.5] border-t border-line">
-        <p>DESIGNED &amp; CODED BY KRISTIJAN GEGA / 2026</p>
-      </footer>
+        {/* Selected Work */}
+        <FadeIn id="projects" className="py-[1.5rem] md:py-[4rem] pb-12 md:pb-[5rem] border-t border-line">
+          <div className="text-[0.68rem] md:text-[0.76rem] font-extrabold tracking-[0.14em] md:tracking-[0.18em] text-accent mb-4 md:mb-6">SELECTED WORK</div>
+          <div className="flex flex-col">
+            {projects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+        </FadeIn>
 
-    </div>
+        {/* Stack */}
+        <FadeIn className="py-[1.5rem] md:py-[4rem] pb-12 md:pb-[5rem] border-t border-line" style={{ overflow: 'hidden' }}>
+          <div className="text-[0.68rem] md:text-[0.76rem] font-extrabold tracking-[0.14em] md:tracking-[0.18em] text-accent mb-6 md:mb-12">
+            STACK
+          </div>
+          <StackMarquee />
+        </FadeIn>
+
+        {/* Contact */}
+        <FadeIn id="contact" className="py-[1.5rem] md:py-[4rem] pb-24 md:pb-[6rem] border-t border-line">
+          <div className="text-[0.68rem] md:text-[0.76rem] font-extrabold tracking-[0.14em] md:tracking-[0.18em] text-accent mb-4 md:mb-6">CONTACT</div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-10 items-center bg-surface border border-line p-8 md:p-12 rounded-[24px]">
+            {/* Left — heading */}
+            <div>
+              <h3 className="text-[1.8rem] md:text-[clamp(2.5rem,4vw,3.5rem)] leading-[1.05] tracking-[-0.03em] mb-[1rem] md:mb-[1.5rem] font-black">
+                Let&apos;s build something <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-green-400">useful.</span>
+              </h3>
+              <p className="text-[1rem] md:text-[1.1rem] text-muted leading-[1.65] md:leading-[1.8] max-w-[480px]">
+                Open to collaborations, freelance projects, and junior opportunities.
+              </p>
+            </div>
+
+            {/* Right — expanded on mobile, slide out buttons stacked vertically on desktop */}
+            <div className="flex flex-col sm:flex-row flex-wrap lg:flex-col lg:items-end gap-3 lg:gap-4 flex-1 w-full lg:w-auto mt-8 lg:mt-0">
+              {CONTACT_LINKS.map(({ key, href, icon, display, external }) => (
+                <a
+                  key={key}
+                  href={href}
+                  {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}
+                  aria-label={display}
+                  title={display}
+                  className="group flex items-center justify-center lg:justify-start gap-2 lg:gap-0 border border-line bg-surface hover:bg-surface-2 text-fg rounded-full h-[54px] overflow-hidden transition-all duration-[400ms] shadow-sm cursor-pointer w-full sm:w-auto lg:w-auto px-6 lg:px-0"
+                >
+                  <span className="flex items-center justify-center flex-shrink-0 w-6 h-6 lg:w-[52px] lg:h-[52px]" style={{ opacity: 0.9 }}>
+                    {icon}
+                  </span>
+
+                  {/* Expanding text: always visible on mobile, zero width expanding on hover for desktop */}
+                  <span className="flex items-center overflow-hidden text-[0.8rem] md:text-[0.85rem] font-bold tracking-[0.04em] whitespace-nowrap transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] max-w-full lg:max-w-0 opacity-100 lg:opacity-0 lg:group-hover:max-w-[280px] lg:group-hover:opacity-100 lg:group-hover:pr-6 lg:group-hover:pl-2">
+                    {display}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </FadeIn>
+
+        {/* Footer */}
+        <footer className="py-[1.5rem] md:py-8 pb-[3rem] md:pb-[4rem] text-[0.62rem] md:text-[0.7rem] text-muted/70 text-center tracking-[0.18em] leading-[1.5] border-t border-line">
+          <p>DESIGNED &amp; CODED BY KRISTIJAN GEGA / 2026</p>
+        </footer>
+
+      </div>
+    </>
   );
 }
 
