@@ -112,6 +112,6 @@ It is also used as a central place to showcase selected projects, current stack 
 ## Author
 Kristijan Gega
 
-GitHub: https://github.com/kgega-dev?utm_source=chatgpt.com
-LinkedIn: https://www.linkedin.com/in/kristijan-gega
-Email: kgega.dev@gmail.com
+- GitHub: https://github.com/kgega-dev?utm_source=chatgpt.com
+- LinkedIn: https://www.linkedin.com/in/kristijan-gega
+- Email: kgega.dev@gmail.com
